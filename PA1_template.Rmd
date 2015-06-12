@@ -4,9 +4,28 @@ author: "Raphael Kurlansik"
 date: "Wednesday, June 10, 2015"
 output: html_document
 ---
+### Data
+___________________________________________________________________________
+
+The data for this assignment can be downloaded from the course web site:
+
+Dataset: [Activity monitoring data](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip) [52K]
+
+The variables included in this dataset are:
+
+**steps**: Number of steps taking in a 5-minute interval (missing values are coded as NA)
+
+**date**: The date on which the measurement was taken in YYYY-MM-DD format
+
+**interval**: Identifier for the 5-minute interval in which measurement was taken
+
+The dataset is stored in a comma-separated-value (CSV) file and there are a total of 17,568 observations in this dataset.
+
+(Note:  This section was taken directly from the master branch created by R. Peng [here](https://github.com/rdpeng/RepData_PeerAssessment1))
+
 
 ### Loading and preprocessing the data   
-  
+_____________________________________________________________________________  
 To get started, load the dplyr, ggplot2, lubridate, and lattice packages. Then read the file into R as a data.table specifying the 'date' class, and remove NA's. 
 
 
