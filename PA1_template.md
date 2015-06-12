@@ -5,6 +5,8 @@ date: "Wednesday, June 10, 2015"
 output: html_document
 ---
 
+### Data
+_____________________________________________________________________________
 The data for this assignment can be downloaded from the course web site:
 
 Dataset: [Activity monitoring data](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip) [52K]
@@ -19,7 +21,7 @@ The variables included in this dataset are:
 
 The dataset is stored in a comma-separated-value (CSV) file and there are a total of 17,568 observations in this dataset.
 
-(Note:  This information was taken directly from the master branch created by R. Peng [here](https://github.com/rdpeng/RepData_PeerAssessment1))
+(Note:  This information was taken directly from the master branch created by R. Peng [here](https://github.com/rdpeng/RepData_PeerAssessment1).  All data analysis, figures, and comments were created by Raphael Kurlansik.)
 
 
 ### Loading and preprocessing the data   
