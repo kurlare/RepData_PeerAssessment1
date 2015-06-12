@@ -325,11 +325,11 @@ qplot(int_means$interval, int_means$Average.Steps,
 <p>As you can see, the steps NAs represent about 13% of the steps data.  This could be significant.  Using a for loop, replace these NAs with the average number of steps for that interval across all days. </p>
 
 <pre><code class="r">imputed.actv &lt;- raw.actv  ## Copy of raw data 
-for(i in 1:17568){
+for(i in 1:17568){  # Number of rows
    if(is.na(imputed.actv$steps[i]) == TRUE){  
-       imputed.actv$steps[i] &lt;- int_means$Average.Steps[
+       imputed.actv$steps[i] &lt;- int_means$Average.Steps[  
        which(int_means$interval == imputed.actv$interval[i])
-       ]
+       ]  ##  Replace the &#39;i&#39;th row containing NA with the mean steps matched by interval
    }
 }
 </code></pre>

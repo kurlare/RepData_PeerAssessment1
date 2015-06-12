@@ -148,11 +148,11 @@ As you can see, the steps NAs represent about 13% of the steps data.  This could
 
 ```r
 imputed.actv <- raw.actv  ## Copy of raw data 
-for(i in 1:17568){
+for(i in 1:17568){  # Number of rows
    if(is.na(imputed.actv$steps[i]) == TRUE){  
-       imputed.actv$steps[i] <- int_means$Average.Steps[
+       imputed.actv$steps[i] <- int_means$Average.Steps[  
        which(int_means$interval == imputed.actv$interval[i])
-       ]
+       ]  ##  Replace the 'i'th row containing NA with the mean steps matched by interval
    }
 }
 ```
