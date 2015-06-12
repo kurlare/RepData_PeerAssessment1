@@ -152,12 +152,13 @@ imputed.actv$day[imputed.actv$day == 7] <- "weekend"
 imputed.actv$day[imputed.actv$day != "weekend"] <- "weekday"
 imputed.actv$day <- factor(imputed.actv$day, levels = c("weekday", "weekend"))
 
-xyplot(imputed.actv$steps ~ imputed.actv$interval | day, 
+p <- xyplot(imputed.actv$steps ~ imputed.actv$interval | day, 
        data = imputed.actv, 
        layout = c(1,2), 
        type = "l", 
        xlab = "Interval", 
        ylab = "Number of steps")
+print(p)
 ```
 
 There is a clear difference between steps taken on the weekend vs the weekdays.  The morning is much busier on weekdays, and the evening is busier on the weekend.  This makes intuitive sense as people have active mornings on weekdays (getting everyone in the house ready to go to school, commuting) and perhaps go out for entertainment or to run errands in the afternoon.  It also appears that perhaps people like to sleep in on the weekends!

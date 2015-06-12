@@ -208,12 +208,13 @@ imputed.actv$day[imputed.actv$day == 7] <- "weekend"
 imputed.actv$day[imputed.actv$day != "weekend"] <- "weekday"
 imputed.actv$day <- factor(imputed.actv$day, levels = c("weekday", "weekend"))
 
-xyplot(imputed.actv$steps ~ imputed.actv$interval | day, 
+p <- xyplot(imputed.actv$steps ~ imputed.actv$interval | day, 
        data = imputed.actv, 
        layout = c(1,2), 
        type = "l", 
        xlab = "Interval", 
        ylab = "Number of steps")
+print(p)
 ```
 
 ![plot of chunk day types](figure/day types-1.png) 
