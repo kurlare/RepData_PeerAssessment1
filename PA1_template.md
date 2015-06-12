@@ -4,6 +4,7 @@ author: "Raphael Kurlansik"
 date: "Wednesday, June 10, 2015"
 output: html_document
 ---
+
 ### Data
 ___________________________________________________________________________
 
