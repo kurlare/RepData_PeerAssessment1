@@ -10,19 +10,32 @@ output: html_document
 To get started, load the dplyr, ggplot2, lubridate, and lattice packages. Then read the file into R as a data.table specifying the 'date' class, and remove NA's. 
 
 
-```{r message = F, warning = F}
+
+```r
 library(dplyr)
 library(ggplot2)
 library(lubridate)
 library(lattice)
 ```
 
-```{r}
+
+```r
 raw.actv <- read.table("activity.csv", 
         sep = ",",
         na.strings = "NA", header = TRUE,
         colClasses = c("integer", "Date", "integer"))
+```
 
+```
+## Warning in file(file, "rt"): cannot open file 'activity.csv': No such file
+## or directory
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
 actv.df <- na.omit(raw.actv) ## New dataframe without NAs
 ```
 
@@ -32,33 +45,49 @@ _________________________________________________________________
 
 Group the data by 'date' and then summarize for the total number of steps taken.
 
-```{r}
+
+```r
 by_date <- group_by(actv.df, date)
 step.total <- summarize(by_date, sum(steps))
 colnames(step.total)[2] <- "total.steps"  # Rename column for clarity
-
 ```
 
 Now lets build a histogram with the total steps taken per day. 
 
-```{r clean hist, fig.height = 4, fig.width = 5}
+
+```r
 hist(step.total$total.steps, main = "Total Steps Taken Per Day", 
         xlab = "Steps Taken", 
         ylab = "Number of Days", 
         col = "red")
 ```
 
+![plot of chunk clean hist](figure/clean hist-1.png) 
+
 Finally, calculate and report the mean and median of the total number of steps taken per day.
-```{r}
+
+```r
 mean(step.total$total.steps)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median(step.total$total.steps)
+```
+
+```
+## [1] 10765
 ```
 ###What is the average daily pattern activity?
 ______________________________________________________________
 
 To find this value we need to plot 5 minute intervals on the x-axis and the average number of steps for each interval on the y-axis.  This time group the data by 'interval', then summarize for the mean steps taken in each interval.
 
-```{r daily activity, fig.height = 4, fig.width = 5}
+
+```r
 by_interval <- group_by(actv.df, interval)
 int_means <- summarize(by_interval, mean(steps))
 colnames(int_means)[2] <- "Average.Steps"
@@ -66,12 +95,21 @@ qplot(int_means$interval, int_means$Average.Steps,
         geom = "line",
         xlab = "5 Minute Interval", 
         ylab = "Average # of Steps")
-
 ```
 
+![plot of chunk daily activity](figure/daily activity-1.png) 
+
 Find the 5-minute interval with the greatest average steps across all days.
-```{r}
+
+```r
 int_means[which.max(int_means$Average.Steps),]
+```
+
+```
+## Source: local data frame [1 x 2]
+## 
+##   interval Average.Steps
+## 1      835      206.1698
 ```
 
 ### Imputing missing values
@@ -79,15 +117,27 @@ ________________________________________________________________________________
 
 Missing values can influence the results of an analysis.  Lets see if that is a concern with this data.  We began by removing NAs, but now lets see how many NAs are in our raw data:
 
-```{r}
-sum(is.na(raw.actv$steps))
-sum(is.na(raw.actv$steps))/nrow(raw.actv) ## Percentage of total rows that are NA
 
+```r
+sum(is.na(raw.actv$steps))
+```
+
+```
+## [1] 2304
+```
+
+```r
+sum(is.na(raw.actv$steps))/nrow(raw.actv) ## Percentage of total rows that are NA
+```
+
+```
+## [1] 0.1311475
 ```
 
 As you can see, the steps NAs represent about 13% of the steps data.  This could be significant.  Using a for loop, replace these NAs with the average number of steps for that interval across all days. 
 
-```{r}
+
+```r
 imputed.actv <- raw.actv  ## Copy of raw data 
 for(i in 1:17568){
    if(is.na(imputed.actv$steps[i]) == TRUE){  
@@ -100,7 +150,8 @@ for(i in 1:17568){
 
 We'd like to know if there are any noticeable differences between the imputed data set and one with NAs removed.  Lets look at a histogram of imputed.actv and check out the mean/median.
 
-```{r imputed histogram, fig.height = 4, fig.width = 5}
+
+```r
 by_date.imp <- group_by(imputed.actv, date)
 step.total2 <- summarize(by_date.imp, sum(steps))
 colnames(step.total2)[2] <- "total.steps"
@@ -109,9 +160,24 @@ hist(step.total2$total.steps, main = "Total Steps Taken Per Day",
         xlab = "Steps Taken", 
         ylab = "Number of Days", 
         col = "red")
+```
 
+![plot of chunk imputed histogram](figure/imputed histogram-1.png) 
+
+```r
 mean(step.total2$total.steps)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median(step.total2$total.steps)
+```
+
+```
+## [1] 10766.19
 ```
 
 There are two key differences between the actv.df and imputed.actv data sets.  First, the replacement of NAs has effectively created 8 new days being measured in the data set.  With NAs removed, summarized data consisted of 53 rows.  The imputed data, however, has 61 rows.    Second, these days all contribute to the largest column in the histogram. This makes sense because their values are based on the means of the data set, not the outliers.  However, where did these additional days come from?  
@@ -125,7 +191,8 @@ Finally, the mean and median for steps taken in a day are essentially the same i
 _______________________________________________________________________________________________
 To answer this question, we must create a new variable that will tell us which type of day it is.  Add a new variable to imputed.actv called 'day' and fill it by calling the wday() function on the 'date' variable.  Now we can transform the values in 'day' to a factor with two levels, 'weekday' and 'weekend'.
 
-```{r day types, message = F, warning = F}
+
+```r
 imputed.actv["day"] <- wday(imputed.actv$date)
 imputed.actv$day[imputed.actv$day == 1]  <- "weekend"
 imputed.actv$day[imputed.actv$day == 7] <- "weekend"
@@ -139,6 +206,8 @@ xyplot(imputed.actv$steps ~ imputed.actv$interval | day,
        xlab = "Interval", 
        ylab = "Number of steps")
 ```
+
+![plot of chunk day types](figure/day types-1.png) 
 
 There is a clear difference between steps taken on the weekend vs the weekdays.  The morning is much busier on weekdays, and the evening is busier on the weekend.  This makes intuitive sense as people have active mornings on weekdays (getting everyone in the house ready to go to school, commuting) and perhaps go out for entertainment or to run errands in the afternoon.  It also appears that perhaps people like to sleep in on the weekends!
 <br><br><br><br>
